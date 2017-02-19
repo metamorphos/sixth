@@ -4,6 +4,7 @@
 int wro=0,rig=0,flag=0;
 int main()
 {
+	void zero(int arr[4]);
 	void fraction();
 	int max(int a,int b);  //最大公约数函数声明
 	int min(int a,int b);  //最小公倍数函数声明
@@ -25,10 +26,11 @@ int main()
 		{
 			num[j]=rand()%10+1;
 		}
-		swit=1;
+		swit=rand()%2+1;
 		switch(swit)
 		{
-		   case 1:fraction();break;   //输出真分数计算的式子
+		   case 1:zero(num);break;  //输出含0个括号的式子
+		   case 2:fraction();break;   //输出真分数计算的式子
 		}
 		if(flag==0)
 			i++;
@@ -49,6 +51,72 @@ int main()
 	return 0;
 }
 
+
+//输出含0个括号的式子的函数
+void zero(int arr[4])  
+{
+	srand((unsigned int)time(NULL)); //设置随机数种子 
+	int input,sign[4],i,test;
+	float temp[5],arr2[4];
+	char sig[4];
+	for(i=1;i<=4;i++)
+	{
+		arr2[i]=arr[i];
+	}
+	temp[1]=arr2[1];
+	sig[0]='*';
+	temp[0]=1;
+	for(i=1;i<=3;i++)
+	{
+		sign[i]=rand()%4+1;
+		if(sign[i]==1)
+		{
+			sig[i]='+';
+		    temp[i+1]=temp[i]+arr2[i+1];
+	    }
+		if(sign[i]==2)
+		{
+			sig[i]='-';
+			temp[i+1]=temp[i]-arr2[i+1];
+		}	
+		if(sign[i]==3)
+		{
+			sig[i]='*';
+			if(sig[i-1]=='-')
+			temp[i+1]=temp[i-1]-arr2[i]*arr2[i+1];
+			else if(sig[i-1]=='+')
+	    	temp[i+1]=temp[i-1]+arr2[i]*arr2[i+1];
+			else
+			temp[i+1]=temp[i]*arr2[i+1];
+		}
+		
+		if(sign[i]==4)
+		{
+			sig[i]='/';
+			if(sig[i-1]=='-')
+			temp[i+1]=temp[i-1]-arr2[i]/arr2[i+1];
+		    else if(sig[i-1]=='+')
+	    	temp[i+1]=temp[i-1]+arr2[i]/arr2[i+1];
+			else
+			temp[i+1]=temp[i]/arr2[i+1];
+		}
+	}
+	test=temp[4];
+	if(temp[4]==test&&temp[4]>=0)     //用test作为检测量，检查随机式子结果是否为非负整数，控制难度
+	{
+		printf("%d%c%d%c%d%c%d=",arr[1],sig[1],arr[2],sig[2],arr[3],sig[3],arr[4]);
+
+printf("%d",test);
+
+		scanf("%d",&input);
+		if(input==test)
+			rig++;
+		else
+			wro++;
+	}
+	else
+		flag=1;     //用flag检测是否输出了题目
+}
 
 
 //真分数的四则运算 
