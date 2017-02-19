@@ -6,6 +6,7 @@ int main()
 {
 	void zero(int arr[4]);
 	void fraction();
+	void kuohao();
 	int max(int a,int b);  //最大公约数函数声明
 	int min(int a,int b);  //最小公倍数函数声明
     int sum,language,i,swit,num[4],j;
@@ -26,15 +27,16 @@ int main()
 		{
 			num[j]=rand()%10+1;
 		}
-		swit=rand()%2+1;
+		swit=rand()%3+1;
 		switch(swit)
 		{
 		   case 1:zero(num);break;  //输出含0个括号的式子
 		   case 2:fraction();break;   //输出真分数计算的式子
+		   case 3:kuohao();break;     //输出含有一个括号的式子
 		}
 		if(flag==0)
 			i++;
-		flag=0;   //用flag检测是否输出了题目
+		flag=0;        //用flag检测是否输出了题目
 	}
 	if(language==1)
 	{
@@ -157,7 +159,7 @@ void fraction()
 	sign=rand()%4+1;        //随机符号
 	if(sign==1)                                         //加法
 	{	
-		printf("%d/%d+%d/%d=",zi1,mu1,zi2,mu2);
+		printf("(%d/%d)+(%d/%d)=",zi1,mu1,zi2,mu2);
 		yue=min(mu1,mu2);
 		zi1=zi1*(yue/mu1);
 		zi2=zi2*(yue/mu2);
@@ -199,7 +201,7 @@ void fraction()
 			com=max(mu3,zi3);
 			mu3=mu3/com;
 			zi3=zi3/com;
-			printf("%d/%d-%d/%d=",zi1/(yue/mu1),mu1,zi2/(yue/mu2),mu2);
+			printf("(%d/%d)-(%d/%d)=",zi1/(yue/mu1),mu1,zi2/(yue/mu2),mu2);
 			if(zi3%mu3==0)
 			{
 			scanf("%d",&input1);
@@ -321,3 +323,281 @@ int min(int a,int b)   //求最小公倍数函数
 		}
 	}
 }
+
+
+//输出含有一个括号的式子的函数
+void kuohao()
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	void kuohao1(float big,float arr[5],char sig[4]);
+	void kuohao2(float big,float arr[5],char sig[4]);
+	void kuohao3(float big,float arr[5],char sig[4]);
+	void kuohao4(float arr[5],char sig[4]);
+	void kuohao5(float arr[5],char sig[4]);   
+	int i,choose,symbol;
+	float big,arr[5];
+	char sig[4];
+	for(i=1;i<=4;i++)
+	{
+		arr[i]=rand()%10+1;
+	}
+	symbol=rand()%4+1;
+	switch(symbol)
+	{
+		case 1:sig[1]='+';big=arr[1]+arr[2];break;
+		case 2:sig[1]='-';big=arr[1]-arr[2];break;
+		case 3:sig[1]='*';big=arr[1]*arr[2];break;
+		case 4:sig[1]='/';big=arr[1]/arr[2];break;
+	}
+	choose=rand()%5+1;
+	switch(choose)
+	{
+		case 1:kuohao1(big,arr,sig);break;
+		case 2:kuohao2(big,arr,sig);break;
+		case 3:kuohao3(big,arr,sig);break;
+		case 4:kuohao4(arr,sig);break;
+		case 5:kuohao5(arr,sig);break;
+	}
+}
+
+
+
+
+
+ //输出形如（1+2）*3+4=的式子 
+void kuohao1(float big,float arr[5],char sig[4])  
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	float caculate(float big,float a,float b,char sig[4]);
+	int test,input;
+	float temp;
+	temp=caculate(big,arr[3],arr[4],sig);
+	test=temp;
+	if(test==temp&&test>=0)
+	{
+		printf("(%.0f%c%.0f)%c%.0f%c%.0f=",arr[1],sig[1],arr[2],sig[2],arr[3],sig[3],arr[4]);
+		printf("%d",test);
+		scanf("%d",&input);
+		if(test==input)
+		   rig++;
+		else
+		   wro++;
+	}
+	else
+	   flag=1;
+}
+
+
+//输出形如1+(2+3)*4=的式子 
+void kuohao2(float big,float arr[5],char sig[4])     
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	float caculate(float big,float a,float b,char sig[4]);
+	int test,input;
+	float temp;
+	temp=caculate(arr[3],big,arr[4],sig);
+	test=temp;
+	if(test==temp&&test>=0)
+	{
+		printf("%.0f%c(%.0f%c%.0f)%c%.0f=",arr[3],sig[2],arr[1],sig[1],arr[2],sig[3],arr[4]);
+		printf("%d",test);
+		scanf("%d",&input);
+		if(test==input)
+		   rig++;
+		else
+		   wro++;
+	}
+	else
+	   flag=1;
+}
+
+
+//输出形如1+2*(3+4)=的式子  
+void kuohao3(float big,float arr[5],char sig[4])     
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	float caculate(float big,float a,float b,char sig[4]);
+	int test,input;
+	float temp;
+	temp=caculate(arr[3],arr[4],big,sig);
+	test=temp;
+	if(test==temp&&test>=0)
+	{
+		printf("%.0f%c%.0f%c(%.0f%c%.0f)=",arr[3],sig[2],arr[4],sig[3],arr[1],sig[1],arr[2]);
+		printf("%d",test);
+		scanf("%d",&input);
+		if(test==input)
+		   rig++;
+		else
+		   wro++;
+	}
+	else
+	   flag=1;
+}
+
+
+
+//输出形如（1+2*3）+4=的式子 
+void kuohao4(float arr[5],char sig[4])         
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	float caculate(float big,float a,float b,char sig[4]);
+	int test,input,fuhao;
+	float temp;
+	temp=caculate(arr[1],arr[2],arr[3],sig);
+	fuhao=rand()%4+1;
+	if(fuhao==1)
+	{
+		temp=temp+arr[4];
+		sig[1]='+';
+	}
+	if(fuhao==2)
+	{
+		temp=temp-arr[4];
+		sig[1]='-';
+	}
+	if(fuhao==3)
+	{
+		temp=temp*arr[4];
+		sig[1]='*';
+	}
+	if(fuhao==4)
+	{
+		temp=temp/arr[4];
+		sig[1]='/';
+	}
+	test=temp;
+	if(test==temp&&test>=0)
+	{
+		printf("(%.0f%c%.0f%c%.0f)%c%.0f=",arr[1],sig[2],arr[2],sig[3],arr[3],sig[1],arr[4]);
+		printf("%d",test);
+		scanf("%d",&input);
+		if(test==input)
+		   rig++;
+		else
+		   wro++;
+	}
+	else
+	   flag=1;
+}
+
+
+//输出形如1+（2+3*4）=的式子 
+void kuohao5(float arr[5],char sig[4])         
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	float caculate(float big,float a,float b,char sig[4]);
+	int test,input,fuhao;
+	float temp;
+	temp=caculate(arr[2],arr[3],arr[4],sig);
+	fuhao=rand()%4+1;
+	if(fuhao==1)
+	{
+		temp=arr[1]+temp;
+		sig[1]='+';
+	}
+	if(fuhao==2)
+	{
+		temp=arr[1]-temp;
+		sig[1]='-';
+	}
+	if(fuhao==3)
+	{
+		temp=arr[1]*temp;
+		sig[1]='*';
+	}
+	if(fuhao==4)
+	{
+		temp=arr[1]/temp;
+		sig[1]='/';
+	}
+	test=temp;
+	if(test==temp&&test>=0)
+	{
+		printf("%.0f%c(%.0f%c%.0f%c%.0f)=",arr[1],sig[1],arr[2],sig[2],arr[3],sig[3],arr[4]);
+		printf("%d",test);
+		scanf("%d",&input);
+		if(test==input)
+		   rig++;
+		else
+		   wro++;
+	}
+	else
+	   flag=1;
+}
+
+
+//计算含有三个数字式子结果的函数 
+float caculate(float big,float a,float b,char sig[4])   
+{
+	srand((unsigned int)time(NULL));//设置当前时间为种子
+	int sym1,sym2,i;
+	float temp;
+	sym1=rand()%4+1;
+	if(sym1==1)
+	{
+		temp=big+a;
+		sig[2]='+';
+	}
+	else if(sym1==2)
+	{
+		temp=big-a;
+		sig[2]='-';
+	}	
+	else if(sym1==3)
+	{
+		temp=big*a;
+		sig[2]='*';
+	}	
+	else
+	{
+		temp=big/a;
+		sig[2]='/';
+	}
+			
+	sym2=rand()%4+1;
+	if(sym2==1)
+	{
+		temp=temp+b;
+		sig[3]='+';
+	}
+	else if(sym2==2)
+	{
+		temp=temp-b;
+		sig[3]='-';
+	}
+	else if(sym2==3)
+	{
+		if(sym1==1)
+		{
+			temp=big+a*b;
+		}
+		else if(sym1==2)
+		{
+			temp=big-a*b;
+		}
+		else
+		{
+			temp=temp*b;
+		}
+		sig[3]='*';
+	}
+	else
+	{
+		if(sym1==1)
+		{
+			temp=big+a/b;
+		}
+		else if(sym1==2)
+		{
+			temp=big-a/b;
+		}
+		else
+		{
+			temp=temp/b;
+		}
+		sig[3]='/';
+	}
+	return(temp);
+}
+
